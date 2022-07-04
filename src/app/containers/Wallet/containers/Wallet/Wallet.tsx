@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@linaria/react';
 
 import { Button, Window, Section } from '@app/shared/components';
@@ -70,9 +70,10 @@ const manageStyled = css`
 const Wallet = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const assets = useSelector(selectAssets()).filter((item) => item.asset_id === 0);
-  const transactions = useSelector(selectTransactions());
+  const assets = useSelector(selectAssets());
+  // const transactions = useSelector(selectTransactions());
   const rate = useSelector(selectRate());
+  const target = assets.find(({ asset_id: id }) => id === 0);
 
   const [data, setData] = useState([]);
   useEffect(() => {
@@ -89,7 +90,6 @@ const Wallet = () => {
       dispatch(loadRate.request());
     }
   }, [dispatch, rate]);
-
   const handlePrevious: React.MouseEventHandler = () => {
     navigate(ROUTES.WALLET.BASE);
   };

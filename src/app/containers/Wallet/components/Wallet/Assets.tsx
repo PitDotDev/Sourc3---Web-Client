@@ -31,12 +31,6 @@ const ListItemStyled = styled.li<{ opt_color?: string; asset_id: number }>`
 `;
 
 const Assets: React.FC<AssetsProps> = ({ data, isBalanceHidden }) => (
-  // const navigate = useNavigate();
-
-  // const navigateToDetail = (asset_id: number) => {
-  //   navigate(`${ROUTES.ASSETS.DETAIL.replace(':id', '')}${asset_id}`);
-  // };
-
   <ListStyled>
     {data.map(({ asset_id, available, metadata_pairs }) => (
       <ListItemStyled

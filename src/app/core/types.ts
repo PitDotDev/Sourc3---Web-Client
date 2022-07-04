@@ -13,7 +13,8 @@ export type ButtonVariant =
   | 'switch'
   | 'linkDrop'
   | 'max'
-  | 'manage';
+  | 'manage'
+  | 'currentRole';
 
 export type AddressType = 'regular' | 'regular_new' | 'max_privacy' | 'offline' | 'public_offline' | 'unknown';
 export interface CreateWalletParams {

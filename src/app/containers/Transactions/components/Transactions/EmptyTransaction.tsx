@@ -19,7 +19,7 @@ const EmptyListTitle = styled.div`
   line-height: 1.43;
   letter-spacing: normal;
   text-align: center;
-  color: #fff;
+  color: #000;
   opacity: 0.5;
   margin: 20px 0;
 `;

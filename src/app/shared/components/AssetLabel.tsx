@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { styled } from '@linaria/react';
 import { css } from '@linaria/core';
 
@@ -78,14 +78,10 @@ const AssetLabel: React.FC<AssetLabelProps> = ({
   const signed = !!income;
   const sign = signed ? getSign(income) : '';
   const name = truncate(target?.metadata_pairs.UN) ?? '';
-  const checkAmount = amount === 0 ? `${sign}0.00` : `${sign}${convertLowAmount(amount)}`;
-  const [label, setLabel] = useState(checkAmount);
 
-  useEffect(() => {
-    if (checkAmount.length > 14) {
-      setLabel(`${checkAmount.substring(15, -1)}..`);
-    }
-  }, [checkAmount]);
+  const label = `${sign}${convertLowAmount(amount)}`.length > 14
+    ? `${`${sign}${convertLowAmount(amount)}`.substring(12, -1)}..`
+    : `${sign}${convertLowAmount(amount)}`;
 
   return (
     <ContainerStyled className={className}>

@@ -145,7 +145,11 @@ const SwitchButtonStyled = styled(IconButtonStyled)`
   margin: 0 0;
   font-size: 16px;
   font-weight: 800;
-  color: ${({ pallete }) => `var(--color-${pallete})`};
+  color: var(--color-orange);
+`;
+const CurrentButtonStyled = styled(SwitchButtonStyled)`
+  color: var(--color-currentRole);
+  cursor: default;
 `;
 const LinkDropButtonStyled = styled(GhostButtonStyled)`
   background-color: rgba(255, 255, 255, 0.03);
@@ -237,6 +241,7 @@ const VARIANTS = {
   linkDrop: LinkDropButtonStyled,
   max: MaxButtonStyled,
   manage: ManageComponent,
+  currentRole: CurrentButtonStyled,
 };
 
 const Button: React.FC<ButtonProps> = ({
