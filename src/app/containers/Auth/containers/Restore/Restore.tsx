@@ -69,7 +69,7 @@ const Restore: React.FC = () => {
     updateInterval(i);
   };
   const handlePrevious: React.MouseEventHandler = () => {
-    navigate('/');
+    navigate(ROUTES.AUTH.BASE);
   };
 
   return (
