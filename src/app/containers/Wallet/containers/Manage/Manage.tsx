@@ -183,6 +183,10 @@ function Manage() {
       item.active = false;
       return item;
     });
+    chrome.tabs.query({ currentWindow: true, active: true }, (tabs) => {
+      const [activeTab] = tabs;
+      chrome.tabs.sendMessage(activeTab.id, { type: 'set-pid', items: newData });
+    });
     setData(newData);
   };
 
