@@ -6,7 +6,7 @@ import {
   SendForm, Receive, Utxo, Wallet,
 } from '..';
 import Activity from '../Activity';
-import Manage from '../Manage';
+import Manage from '../../../Manage';
 
 const routes = [
   {

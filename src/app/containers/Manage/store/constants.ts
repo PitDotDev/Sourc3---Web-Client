@@ -1,0 +1,7 @@
+export enum ManageActionTypes {
+  ADD_USER = 'ADD_USER',
+  GET_ALL_USERS = 'GET_ALL_USERS',
+  EDIT_USER = 'EDIT_USER',
+  SET_ACTIVE_USER = 'SET_ACTIVE_USER',
+  SET_ACTIVE_PID = 'SET_ACTIVE_PID',
+}

@@ -9,12 +9,13 @@ import {
   IconProfileLarge2,
   IconProfileLarge3,
   IconProfileLarge4,
-  // IconRemove,
 } from '@app/shared/icons';
 import { css } from '@linaria/core';
 import { styled } from '@linaria/react';
 import useOutsideClick from '@app/shared/hooks/OutsideClickHook';
-// import { profile } from '@app/shared/constants/profile';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionAddUser, actionEditUser, actionSetActiveUser } from './store/actions';
+import { selectProfiles } from './store/selector';
 
 const ProfileComponent = styled.div`
   display: flex;
@@ -100,67 +101,34 @@ const overlay = css`
 function Manage() {
   const avatar = [IconProfileLarge, IconProfileLarge2, IconProfileLarge3, IconProfileLarge4];
 
-  const [data, setData] = useState([]);
   const [visiblePopup, setVisiblePopup] = useState(false);
   const [id, setId] = useState(null);
   const [edit, setEdit] = useState(false);
   const [name, setName] = useState('');
   const inputRef = useRef<HTMLInputElement>();
-
-  useEffect(() => {
-    setData(JSON.parse(localStorage.getItem('default')));
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('default', JSON.stringify(data));
-    const activePid = JSON.parse(localStorage.getItem('default')).filter((item) => item.active === true);
-    chrome.storage.sync.set({ activePid }, () => {});
-  }, [data]);
+  const profiles = useSelector(selectProfiles());
+  const dispatch = useDispatch();
 
   const addUser = (newName) => {
     const ava = Math.floor(Math.random() * 4);
-
-    // let id = null;
-    // const randomMath = () => {
-    //   const rNum = Math.floor(Math.random() * 100);
-    //   console.log(rNum);
-    //   data.map((item) => {
-    //     // const uId = rNum();
-    //     if (item.id === rNum) {
-    //       randomMath();
-    //     } else { id = rNum; }
-    //     return item;
-    //   });
-    //   return id;
-    // };
     const newData = {
-      id: data.length,
-      name: newName || `User ${data.length + 1}`,
+      id: profiles.length,
+      name: newName || `User ${profiles.length + 1}`,
       active: false,
       avatar: ava,
     };
-    setData([...data, newData]);
+    dispatch(actionAddUser(newData));
   };
 
-  // const removeProfile = (id) => {
-  //   if (data.length > 1) {
-  //     const removeData = data.filter((item) => item.id !== id);
-  //     setData(removeData);
-  //   } else {
-  //     console.log('No remove last acc');
-  //   }
-  //   // localStorage.setItem('default', JSON.stringify(data));
-  // };
-
   const handleEdit = (idx, newName) => {
-    const newData = data.map((item) => {
+    const newData = profiles.map((item) => {
       if (item.id === idx) {
         item.name = newName;
         return item;
       }
       return item;
     });
-    setData(newData);
+    dispatch(actionEditUser(newData));
   };
 
   const handleConfirm: React.MouseEventHandler = (idx?) => {
@@ -175,7 +143,7 @@ function Manage() {
     }
   };
   const selectProfile = (idx) => {
-    const newData = data.map((item) => {
+    const newData = profiles.map((item) => {
       if (item.id === idx) {
         item.active = true;
         return item;
@@ -187,7 +155,7 @@ function Manage() {
       const [activeTab] = tabs;
       chrome.tabs.sendMessage(activeTab.id, { type: 'set-pid', items: newData });
     });
-    setData(newData);
+    dispatch(actionSetActiveUser(newData));
   };
 
   const ContainerProfile = ({ item }) => {
@@ -263,7 +231,7 @@ function Manage() {
     <>
       <Window title="Manage profiles">
         <ProfileComponent>
-          {data && data.map((item) => <ContainerProfile item={item} key={item.id} />)}
+          {profiles && profiles.map((item) => <ContainerProfile item={item} key={item.id} />)}
         </ProfileComponent>
         <Button onClick={() => setVisiblePopup(true)}>Add new profile</Button>
       </Window>
@@ -282,7 +250,7 @@ function Manage() {
           <Input
             ref={inputRef}
             maxLength={17}
-            placeholder={`User ${data.length + 1}`}
+            placeholder={`User ${profiles.length + 1}`}
             value={edit ? name : ''}
             onChange={(e) => setName(e.target.value)}
           />
@@ -299,7 +267,7 @@ function Manage() {
           )}
           footer
         >
-          <Input ref={inputRef} maxLength={17} placeholder={`User ${data.length + 1}`} />
+          <Input ref={inputRef} maxLength={17} placeholder={`User ${profiles.length + 1}`} />
         </Popup>
       )}
     </>

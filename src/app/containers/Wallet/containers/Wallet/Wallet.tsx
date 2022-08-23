@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { styled } from '@linaria/react';
 
 import { Button, Window, Section } from '@app/shared/components';
 
 import {
-  ArrowUpIcon, ArrowDownIcon, IconProfileLarge, ArrowDownIconUnder, IconStar,
+  ArrowUpIcon, ArrowDownIcon, ArrowDownIconUnder, IconStar,
 } from '@app/shared/icons';
 
 import { useNavigate } from 'react-router-dom';
@@ -14,9 +14,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectAssets, selectRate } from '@app/containers/Wallet/store/selectors';
 
 import { loadRate } from '@app/containers/Wallet/store/actions';
-import { selectTransactions } from '@app/containers/Transactions/store/selectors';
-import { avatar, profile } from '@app/shared/constants/profile';
+import { avatar } from '@app/shared/constants/profile';
 import { css } from '@linaria/core';
+import { selectProfiles } from '@app/containers/Manage/store/selector';
 import { Assets } from '../../components/Wallet';
 
 // const TXS_MAX = 4;
@@ -42,25 +42,25 @@ const Avatar = styled.div`
   top: 81px;
 `;
 const Name = styled.p`
-margin: 0
-font-weight: 700;
-font-size: 20px;
-line-height: 24px;
+  margin: 0;
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 24px;
 
-text-align: left;
-letter-spacing: 0.1px;
-margin-left: 12px;
+  text-align: left;
+  letter-spacing: 0.1px;
+  margin-left: 12px;
 `;
 const ButtonStyled = styled.div`
-display: flex
-width:100%
-padding: 24px;
-flex-wrap: wrap;
-flex-direction: row;
-justify-content: space-around;
-& > button:nth-child(even){
-  margin-left: 17px;
-}
+  display: flex;
+  width: 100%;
+  padding: 24px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  & > button:nth-child(even) {
+    margin-left: 17px;
+  }
 `;
 const manageStyled = css`
   position: relative !important;
@@ -73,17 +73,9 @@ const Wallet = () => {
   const assets = useSelector(selectAssets());
   // const transactions = useSelector(selectTransactions());
   const rate = useSelector(selectRate());
-  const target = assets.find(({ asset_id: id }) => id === 0);
 
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    if (localStorage.length === 0 || JSON.parse(localStorage.getItem('default')) === null) {
-      localStorage.setItem('default', JSON.stringify(profile));
-    }
-    setData(JSON.parse(localStorage.getItem('default')).filter((item) => item.active === true));
-  }, []);
-  // const [name, setName] = useState('');
-  // const [av, setAv] = useState(null);
+  const profile = useSelector(selectProfiles());
+  const data = profile.filter((item) => item.active === true);
 
   useEffect(() => {
     if (!rate) {
@@ -100,7 +92,7 @@ const Wallet = () => {
           {data
             && data.map((item) => (
               <>
-                <Avatar>
+                <Avatar key={item.id}>
                   <Button variant="manage" icon={avatar[item.avatar]} />
                 </Avatar>
                 <Name>{item.name}</Name>

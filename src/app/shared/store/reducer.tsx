@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import produce from 'immer';
 import { ActionType, createReducer } from 'typesafe-actions';
-import { profile } from '../constants/profile';
 
 import { SharedStateType } from '../interface';
 import * as actions from './actions';
@@ -37,18 +36,6 @@ const reducer = createReducer<SharedStateType, Action>(initialState)
   .handleAction(actions.unlockWallet, (state) => produce(state, (nexState) => {
     nexState.isLocked = false;
     localStorage.removeItem('locked');
-
-    let activePid = [];
-    if (localStorage.length === 0 || JSON.parse(localStorage.getItem('default')) === null) {
-      chrome.storage.sync.clear();
-      console.log(profile);
-      localStorage.setItem('default', JSON.stringify(profile));
-    } else {
-      activePid = JSON.parse(localStorage.getItem('default')).filter((item) => item.active === true);
-    }
-    chrome.storage.sync.set({ activePid }, () => {
-      console.log(`Value is set to ${Object.values(activePid)}`);
-    });
   }));
 
 export { reducer as SharedReducer };

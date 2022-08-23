@@ -16,6 +16,7 @@ import {
 import NotificationController from '@core/NotificationController';
 import { DatabaseSyncProgress, SyncStep } from '@app/containers/Auth/interfaces';
 
+import { actionGetAllUSers } from '@app/containers/Manage/store/actions';
 import { actions } from '.';
 import store from '../../../../index';
 
@@ -63,6 +64,7 @@ export function* handleProgress({
   if (is_wallet_synced) return;
   if (current_state_hash === tip_state_hash) {
     yield put(actions.setSyncedWalletState(true));
+    yield put(actionGetAllUSers());
     const isLocked = localStorage.getItem('locked');
     if (getEnvironment() !== Environment.NOTIFICATION) {
       if (isLocked) {

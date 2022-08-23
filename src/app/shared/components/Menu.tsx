@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { styled } from '@linaria/react';
 import { css } from '@linaria/core';
@@ -8,8 +8,10 @@ import { IconProfile, IconSettings } from '@app/shared/icons';
 import { ROUTES } from '@app/shared/constants';
 import { useNavigate } from 'react-router-dom';
 // import config from '@app/config';
+import { useSelector } from 'react-redux';
+import { selectProfiles } from '@app/containers/Manage/store/selector';
 import Button from './Button';
-import { avatar, profile } from '../constants/profile';
+import { avatar } from '../constants/profile';
 
 const MENU_ITEMS = [
   {
@@ -75,13 +77,8 @@ const Menu: React.FC<MenuProps> = () => {
       window.open(item.value);
     }
   };
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    if (localStorage.length === 0 || JSON.parse(localStorage.getItem('default')) === null) {
-      localStorage.setItem('default', JSON.stringify(profile));
-    }
-    setData(JSON.parse(localStorage.getItem('default')).filter((item) => item.active === true));
-  }, []);
+  const profile = useSelector(selectProfiles());
+  const data = profile && Object.values(profile).filter((item) => item.active === true);
 
   return (
     <ContainerStyled>

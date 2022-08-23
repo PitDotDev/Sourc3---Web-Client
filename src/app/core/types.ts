@@ -370,3 +370,12 @@ export interface PaymentProof {
   payment_proof: string;
   rates: Rate[];
 }
+export interface ManageUsers {
+  id: number;
+  name: string;
+  active: boolean;
+  avatar: number;
+}
+export interface Profile {
+  profiles: ManageUsers[];
+}
