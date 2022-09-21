@@ -20,13 +20,20 @@ const reducer = (state = initialState, action) => {
       return { ...state, profiles: updateProfiles };
     }
     case ManageActionTypes.GET_ALL_USERS: {
-      // eslint-disable-next-line max-len
       if (
         localStorage.length === 0
         || JSON.parse(localStorage.getItem('default')) === null
         || JSON.parse(localStorage.getItem('default')) === undefined
-      ) return window.localStorage.setItem('default', JSON.stringify(state));
-      return JSON.parse(window.localStorage.getItem('default'));
+          || localStorage.length === null
+      ) {
+        return window.localStorage.setItem('default', JSON.stringify(state));
+      }
+      const activePid = JSON.parse(localStorage.getItem('default')).profiles.filter((item) => item.active === true);
+      chrome.storage.sync.set({ activePid });
+      return {
+        ...state,
+        profiles: JSON.parse(window.localStorage.getItem('default')).profiles,
+      };
     }
     case ManageActionTypes.EDIT_USER: {
       const updateProfiles = action.payload;
