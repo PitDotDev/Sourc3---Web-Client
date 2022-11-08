@@ -1,9 +1,9 @@
 import { GROTHS_IN_BEAM } from '@app/containers/Wallet/constants';
-import { Transaction, AddressType } from '@core/types';
+import { AddressType, Transaction } from '@core/types';
 
 export const copyToClipboard = (value: string) => navigator.clipboard.writeText(value);
 
-export function compact(value: string, stringLength: number = 6): string {
+export function compact(value: string, stringLength: number = 5): string {
   if (value.length <= 11) {
     return value;
   }
@@ -78,4 +78,8 @@ export const convertLowAmount = (amount: number) => {
     return amount.toFixed(Number(exp[1]));
   }
   return amount;
+
+  // return +amount <= 0.0000001
+  //   ? amount.toFixed(Number(amount.toString().replace(`${amount.toString()[0]}e-`, '')))
+  //   : amount;
 };

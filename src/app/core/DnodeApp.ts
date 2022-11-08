@@ -13,27 +13,33 @@ export default class DnodeApp {
       if (!localStorage.getItem('locked')) {
         this.appApiHandler(...args);
       } else {
-        this.appApiHandler(JSON.stringify({
-          error: true,
-          errcode: -5,
-          errormsg: 'Wallet is locked',
-        }));
+        this.appApiHandler(
+          JSON.stringify({
+            error: true,
+            errcode: -5,
+            errormsg: 'Wallet is locked',
+          }),
+        );
       }
     });
   }
 
   walletIsLocked() {
-    this.appApiHandler(JSON.stringify({
-      error: true,
-      errcode: -5,
-      errormsg: 'Wallet is locked',
-    }));
+    this.appApiHandler(
+      JSON.stringify({
+        error: true,
+        errcode: -5,
+        errormsg: 'Wallet is locked',
+      }),
+    );
   }
 
   walletUnlocked() {
-    this.appApiHandler(JSON.stringify({
-      is_locked: false,
-    }));
+    this.appApiHandler(
+      JSON.stringify({
+        is_locked: false,
+      }),
+    );
   }
 
   pageApi() {
@@ -57,16 +63,10 @@ export default class DnodeApp {
           notificationManager.openAuthNotification(params, params.appurl);
         }
       },
-      localStorage: async () => {
-        let a;
-        await new Promise((resolve, reject) => {
-          chrome.storage.sync.get(['activePid'], (result) => {
-            a = result;
-            resolve(result);
-          });
-        });
-        return a;
-      },
+
+      localStorage: async () => new Promise((resolve) => {
+        chrome.storage.sync.get(['activePid'], (result) => resolve(result));
+      }),
     };
   }
 

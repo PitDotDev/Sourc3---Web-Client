@@ -62,7 +62,7 @@ function shouldInjectProvider() {
   return doctypeCheck() && suffixCheck() && documentElementCheck();
 }
 
-let extensionPort = extensionizer.runtime.connect({ name: Environment.CONTENT_REQ });
+const extensionPort = extensionizer.runtime.connect({ name: Environment.CONTENT_REQ });
 
 document.documentElement.setAttribute('sourc3-extension-installed', 'true');
 window.addEventListener('message', (event) => {
@@ -80,11 +80,10 @@ window.addEventListener('message', (event) => {
 
   if (event.data.type === 'create_sourc3_api') {
     if (event.data.is_reconnect) {
-      extensionPort = extensionizer.runtime.connect({ name: Environment.CONTENT_REQ });
       extensionPort.postMessage(reqData);
     } else {
       setupConnection();
-      extensionPort = extensionizer.runtime.connect({ name: Environment.CONTENT_REQ });
+
       extensionPort.postMessage(reqData);
       extensionPort.onMessage.addListener((msg) => {
         if (msg.result && shouldInjectProvider()) {

@@ -187,13 +187,15 @@ export default class WasmWallet {
   static convertTokenToJson(token: string) {
     try {
       const json = WasmWalletClient.ConvertTokenToJson(token);
+
       const result = JSON.parse(json);
 
-      const { Amount: amount, AssetID: id } = result.params;
+      const { Amount: amount, AssetID: id, PeerID: peer_id } = result.params;
 
       return {
         amount: !amount ? null : parseFloat(amount) / GROTHS_IN_BEAM,
         asset_id: !id ? null : parseInt(id, 10),
+        peer_id,
       };
     } catch (error) {
       // eslint-disable-next-line no-console
@@ -278,16 +280,18 @@ export default class WasmWallet {
     if (this.isRunning()) {
       this.emit(BackgroundEvent.UNLOCK_WALLET, true);
       if (notificationManager.notification && notificationManager.notification.type === NotificationType.AUTH) {
-        if (this.isConnectedSite({
-          appName: notificationManager.notification.params.appname,
-          appUrl: notificationManager.notification.params.appurl,
-        })) {
+        if (
+          this.isConnectedSite({
+            appName: notificationManager.notification.params.appname,
+            appUrl: notificationManager.notification.params.appurl,
+          })
+        ) {
           if (!notificationManager.notification.params.is_reconnect) {
             this.connectExternal(notificationManager.notification.params);
           } else {
-            for (const url in this.apps) {
+            Object.values(this.apps).forEach((url: string) => {
               this.apps[url].walletUnlocked();
-            }
+            });
           }
           this.emit(BackgroundEvent.CLOSE_NOTIFICATION);
         } else {
@@ -379,7 +383,10 @@ export default class WasmWallet {
   }
 
   removeConnectedSite(site: ExternalAppConnection) {
-    this.connectedApps.splice(this.connectedApps.findIndex((el) => el.appUrl === site.appUrl && el.appName === site.appName), 1);
+    this.connectedApps.splice(
+      this.connectedApps.findIndex((el) => el.appUrl === site.appUrl && el.appName === site.appName),
+      1,
+    );
 
     extensionizer.storage.local.set({
       sites: this.connectedApps,
@@ -666,9 +673,9 @@ export default class WasmWallet {
         this.emit(id, WasmWallet.loadLogs());
         break;
       case WalletMethod.WalletLocked:
-        for (const url in this.apps) {
+        Object.values(this.apps).forEach((url: string) => {
           this.apps[url].walletIsLocked();
-        }
+        });
 
         break;
       default:
