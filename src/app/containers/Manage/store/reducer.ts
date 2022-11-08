@@ -24,7 +24,7 @@ const reducer = (state = initialState, action) => {
         localStorage.length === 0
         || JSON.parse(localStorage.getItem('default')) === null
         || JSON.parse(localStorage.getItem('default')) === undefined
-          || localStorage.length === null
+        || localStorage.length === null
       ) {
         return window.localStorage.setItem('default', JSON.stringify(state));
       }

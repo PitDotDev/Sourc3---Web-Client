@@ -63,16 +63,10 @@ export default class DnodeApp {
           notificationManager.openAuthNotification(params, params.appurl);
         }
       },
-      localStorage: async () => {
-        let a;
-        await new Promise((resolve) => {
-          chrome.storage.sync.get(['activePid'], (result) => {
-            a = result;
-            resolve(result);
-          });
-        });
-        return a;
-      },
+
+      localStorage: async () => new Promise((resolve) => {
+        chrome.storage.sync.get(['activePid'], (result) => resolve(result));
+      }),
     };
   }
 

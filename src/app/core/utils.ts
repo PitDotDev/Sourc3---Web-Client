@@ -1,9 +1,9 @@
 import { GROTHS_IN_BEAM } from '@app/containers/Wallet/constants';
-import { Transaction, AddressType } from '@core/types';
+import { AddressType, Transaction } from '@core/types';
 
 export const copyToClipboard = (value: string) => navigator.clipboard.writeText(value);
 
-export function compact(value: string, stringLength: number = 6): string {
+export function compact(value: string, stringLength: number = 5): string {
   if (value.length <= 11) {
     return value;
   }
