@@ -115,7 +115,7 @@ function handleConnect(remote) {
           if (wallet.isConnectedSite({ appName: msg.appname, appUrl: remote.sender.origin })) {
             msg.appurl = remote.sender.origin;
             wallet.connectExternal(msg);
-          } else if (msg.type === ExternalAppMethod.CreateBeamApi) {
+          } else if (msg.type === ExternalAppMethod.CreateSourc3Api) {
             if (msg.is_reconnect && notificationManager.appname === msg.appname) {
               // eslint-disable-next-line
               notificationManager.openPopup()
