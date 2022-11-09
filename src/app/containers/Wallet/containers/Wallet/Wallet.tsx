@@ -73,7 +73,7 @@ const Wallet = () => {
   const assets = useSelector(selectAssets());
   // const transactions = useSelector(selectTransactions());
   const rate = useSelector(selectRate());
-
+  const target = assets.find(({ asset_id: id }) => id === 0);
   const profile = useSelector(selectProfiles());
   const data = profile.filter((item) => item.active === true);
 
@@ -85,6 +85,8 @@ const Wallet = () => {
   const handlePrevious: React.MouseEventHandler = () => {
     navigate(ROUTES.WALLET.BASE);
   };
+  console.log({assets});
+  
   return (
     <Window title="Profile" onPrevious={handlePrevious}>
       <ActionsStyled>

@@ -30,6 +30,7 @@ const ContainerStyled = styled.nav`
   position: absolute;
   width: 95px;
   right: 0;
+  z-index: 4;
 `;
 
 const ListStyled = styled.ul`

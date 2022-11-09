@@ -34,6 +34,7 @@ import {
   selectAssetChange,
   selectAssets,
   selectChange,
+  selectParsedAddressUD,
   selectIsSendReady,
   selectSelectedAssetId,
   selectSendAddressData,
@@ -185,6 +186,7 @@ const SendForm = () => {
   const asset_change = useSelector(selectAssetChange());
   const is_send_ready = useSelector(selectIsSendReady());
   const selected_asset_id = useSelector(selectSelectedAssetId());
+  const parsed_address_ud = useSelector(selectParsedAddressUD());
 
   const beam = useMemo(() => assets.find((a) => a.asset_id === 0), [assets]);
 
@@ -405,7 +407,7 @@ const SendForm = () => {
     const transactionPayload = {
       fee,
       value,
-      address,
+      address: parsed_address_ud ? parsed_address_ud : address,
       comment,
       asset_id: send_amount.asset_id,
       offline: offline || isMaxPrivacy,
@@ -439,8 +441,10 @@ const SendForm = () => {
               variant="gray"
               label={getAddressHint()}
               valid={isAddressValid()}
-              placeholder="Paste the recipient address"
-              value={focus ? values.address : compactAddress}
+              // placeholder="Paste the recipient address"
+              placeholder="Paste recipient address here"
+              value={parsed_address_ud || !is_send_ready ? values.address : (focus ? values.address : compactAddress) }
+              defaultValue={parsed_address_ud || !is_send_ready ? values.address : (focus ? values.address : compactAddress)}
               onInput={handleAddressChange}
               className="send-input"
               onFocus={() => setFocus(true)}

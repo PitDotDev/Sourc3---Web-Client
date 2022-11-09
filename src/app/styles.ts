@@ -131,7 +131,7 @@ css`
 
     html,
     body {
-      margin: 0;
+      margin: 0 auto;
       padding: 0;
     }
 

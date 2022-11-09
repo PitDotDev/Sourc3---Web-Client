@@ -13,6 +13,8 @@ import {
 } from '@core/utils';
 import { AddressData } from '@core/types';
 import { AssetTotal, TransactionAmount } from '@app/containers/Wallet/interfaces';
+import { useSelector } from 'react-redux';
+import { selectParsedAddressUD } from '../../store/selectors';
 
 const SC3Amount = styled.p`
   font-weight: 800;
@@ -73,6 +75,8 @@ const SendConfirm = (props: SendConfirmProps) => {
   const {
     address, offline, send_amount, selected, addressData, fee, change, submitSend, beam, asset_change,
   } = props;
+
+  const parsed_address_ud = useSelector(selectParsedAddressUD());
 
   const { asset_id, amount } = send_amount;
 

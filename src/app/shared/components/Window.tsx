@@ -39,13 +39,15 @@ const ContainerStyled = styled.div<WindowProps>`
   position: relative;
   min-height: 600px;
   padding: ${({ padding }) => (padding === 'auth' ? '100px 32px 30px' : '56px 0 30px')};
+  // min-height: 100vh;
+  // padding: 130px 30px 30px;
   text-align: center;
   background: white;
   //145
 `;
 
 const HeadingStyled = styled.div<WindowProps>`
-  position: fixed;
+  position: absolute;
   z-index: 2;
   top: 0;
   left: 0;
